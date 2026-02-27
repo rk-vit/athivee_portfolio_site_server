@@ -18,7 +18,7 @@ const transporter = nodemailer.createTransport({
   });
   
 const corsOptions = {
-    origin: ["https://www.athivee.com/","http://localhost:8081"],
+    origin: ["https://www.athivee.com","http://localhost:8081","https://athivee.com"],
     credentials: true,
     methods: "GET,POST,PUT,DELETE"
 };
@@ -26,34 +26,6 @@ app.use(express.json());
 app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({extended:true}));
 
-app.post("/carrersSubmitt" ,async(req,res)=>{
-    console.log("requested");
-    const content = `
-    name: ${req.body.name}
-    email: ${req.body.email}
-    phone: ${req.body.phone}
-    department: ${req.body.department}
-    position: ${req.body.position}
-    experience:${req.body.experience}
-    education: ${req.body.education}
-    message:${req.body.message}
-    `;
-    console.log("Request received from:", req.body.name);
-    try {
-        const info = await transporter.sendMail({
-            from: "gurukulavrikshamacademy@gmail.com", // Sender address
-            to: "supriyaravi2007@gmail.com,gurukulavrikshamacademy@gmail.com", // Receivers
-            subject: "Gurukula Vriksham:- New Job Application", // Subject line
-            text: content, // Plain text body
-        });
-
-        console.log("Message sent: %s", info.messageId);
-        res.status(200).json({ success: true, message: "Email sent successfully!" });
-    } catch (error) {
-        console.error("Error sending email:", error);
-        res.status(500).json({ success: false, message: "Failed to send email." });
-    }
-})
 
 app.post("/contactUs", async (req, res) => {
     const content = `
