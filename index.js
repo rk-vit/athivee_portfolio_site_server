@@ -28,28 +28,65 @@ app.use(bodyParser.urlencoded({extended:true}));
 
 
 app.post("/contactUs", async (req, res) => {
-    const content = `
-    Name: ${req.body.name}
-    Phone Number: ${req.body.phone}
-    Email: ${req.body.email}
-    Message: 
-    ${req.body.message}
-    `;
 
-    console.log("Request received from:", req.body.name);
+    const htmlContent = `
+    <div style="font-family: Arial, sans-serif; background:#f4f6f8; padding:30px;">
+    
+        <div style="max-width:600px; margin:auto; background:white; border-radius:8px; padding:25px; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+            
+            <h2 style="color:#2c3e50; text-align:center;">
+                New Enquiry from Athivee Website
+            </h2>
+
+            <hr style="margin:20px 0;"/>
+
+            <table style="width:100%; border-collapse:collapse; font-size:15px;">
+                <tr>
+                    <td style="padding:8px; font-weight:bold;">Name</td>
+                    <td style="padding:8px;">${req.body.name}</td>
+                </tr>
+
+                <tr style="background:#f9fafb;">
+                    <td style="padding:8px; font-weight:bold;">Phone</td>
+                    <td style="padding:8px;">${req.body.phone}</td>
+                </tr>
+
+                <tr>
+                    <td style="padding:8px; font-weight:bold;">Email</td>
+                    <td style="padding:8px;">${req.body.email}</td>
+                </tr>
+            </table>
+
+            <div style="margin-top:20px;">
+                <h4 style="margin-bottom:10px;">Message</h4>
+                <div style="background:#f4f6f8; padding:15px; border-radius:6px;">
+                    ${req.body.message}
+                </div>
+            </div>
+
+            <hr style="margin:25px 0;"/>
+
+            <p style="font-size:12px; color:#888; text-align:center;">
+                This enquiry was submitted from the Athivee website contact form.
+            </p>
+
+        </div>
+
+    </div>
+    `;
 
     try {
         const info = await transporter.sendMail({
-            from: "axiondevsoft@gmail.com", // Sender address
-            to: "revanthkannam05@gmail.com", // Receivers
-            subject: "Athivee:- New Enquiry", // Subject line
-            text: content, // Plain text body
+            from: "axiondevsoft@gmail.com",
+            to: "axiondevsoft@gmail.com, services@athivee.com",
+            subject: "Athivee:- New Enquiry",
+            html: htmlContent   // 👈 use html instead of text
         });
 
-        console.log("Message sent: %s", info.messageId);
         res.status(200).json({ success: true, message: "Email sent successfully!" });
+
     } catch (error) {
-        console.error("Error sending email:", error);
+        console.error(error);
         res.status(500).json({ success: false, message: "Failed to send email." });
     }
 });
