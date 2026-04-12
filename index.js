@@ -77,7 +77,7 @@ app.post("/contactUs", async (req, res) => {
 
     try {
         const info = await transporter.sendMail({
-            from: "axiondevsoft@gmail.com",
+            from: "athiveemanagement@gmail.com",
             to: "axiondevsoft@gmail.com, services@athivee.com",
             subject: "Athivee:- New Enquiry",
             html: htmlContent   // 👈 use html instead of text
